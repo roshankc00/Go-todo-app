@@ -43,6 +43,8 @@ func VerifyPassword(userPassword string, providedPassword string)(bool, string){
 	return check, msg
 }
 
+
+
 func Signup() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -110,7 +112,6 @@ func Signup() gin.HandlerFunc {
 	}
 }
 
-
 func Login() gin.HandlerFunc{
 	return func(c *gin.Context){
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -155,6 +156,8 @@ func Login() gin.HandlerFunc{
 		})
 	}
 }
+
+
 
 func GetUsers() gin.HandlerFunc{
 	return func(c *gin.Context){
@@ -201,10 +204,7 @@ c.JSON(http.StatusOK, gin.H{
 	"success": true,
 	"data": allusers[0],
 })
-
 }
-
-
 }
 
 

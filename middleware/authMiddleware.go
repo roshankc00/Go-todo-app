@@ -10,7 +10,6 @@ import (
 
 func Authenticate() gin.HandlerFunc{
 	return func(c *gin.Context){
-		fmt.Println("haha")
 		clientToken := c.Request.Header.Get("Authorization")
 		fmt.Println(clientToken)
 		if clientToken == ""{

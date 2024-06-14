@@ -17,6 +17,8 @@ import (
 
 var todoCollection *mongo.Collection=database.OpenCollection(database.Client,"todo")
 
+
+
 func GetTodo() gin.HandlerFunc {
     return func(c *gin.Context) {
         todoID := c.Param("todo_id")
@@ -43,6 +45,8 @@ func GetTodo() gin.HandlerFunc {
         })
     }
 }
+
+
 func GetTodos() gin.HandlerFunc {
     return func(c *gin.Context) {
         var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -188,6 +192,8 @@ func UpdateTodo() gin.HandlerFunc {
         })
     }
 }
+
+
 
 
 func DeleteTodo() gin.HandlerFunc {
