@@ -234,3 +234,27 @@ func GetUser() gin.HandlerFunc{
 		})
 	}
 }
+
+
+
+func GetMe() gin.HandlerFunc{
+	return func(c *gin.Context) {
+		email := c.GetString("email")
+		firstName := c.GetString("first_name")
+		lastName := c.GetString("last_name")
+		uid := c.GetString("uid")
+		userType := c.GetString("user_type")
+
+		// Optionally, you can use these values to fetch more detailed user information from your database or storage
+
+		// Return user profile data
+		c.JSON(http.StatusOK, gin.H{
+			"email":      email,
+			"first_name": firstName,
+			"last_name":  lastName,
+			"uid":        uid,
+			"user_type":  userType,
+		})
+	}
+
+}

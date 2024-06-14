@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -17,9 +18,9 @@ func DBinstance() *mongo.Client{
 		log.Fatal("Error loading .env file")
 	}
 
-	// MongoDb := os.Getenv("MONGODB_URL")
+	MongoDb := os.Getenv("MONGO_URI")
 
-	client, err:= mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017/golang-todo"))
+	client, err:= mongo.NewClient(options.Client().ApplyURI(MongoDb))
 	if err != nil {
 		log.Fatal(err)
 	}
