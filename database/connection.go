@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -12,44 +11,33 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func ConnectDb() *mongo.Client {
+func DBinstance() *mongo.Client{
 	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+	if err!=nil{
+		log.Fatal("Error loading .env file")
 	}
 
-	mongoURI := os.Getenv("MONGO_URI")
-	if mongoURI == "" {
-		log.Fatalf("MONGO_URI not set in .env file")
-	}
+	// MongoDb := os.Getenv("MONGODB_URL")
 
-	clientOptions := options.Client().ApplyURI(mongoURI)
-
-	// Connect to MongoDB
-	client, err := mongo.NewClient(clientOptions)
+	client, err:= mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017/golang-todo"))
 	if err != nil {
-		log.Fatalf("Failed to create MongoDB client: %v", err)
+		log.Fatal(err)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Fatalf("Failed to connect to MongoDB: %v", err)
+		log.Fatal(err)
 	}
-
-	
-
 	fmt.Println("Connected to MongoDB!")
+
 	return client
 }
 
+var Client *mongo.Client = DBinstance()
 
-var Client *mongo.Client=ConnectDb()
-
-
-func openCollection(client *mongo.Client , collectionName string)*mongo.Collection{
-	collection:=client.Database("cluster0").Collection(collectionName)
+func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection{
+	var collection *mongo.Collection = client.Database("cluster0").Collection(collectionName)
 	return collection
 }
