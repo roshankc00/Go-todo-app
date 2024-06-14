@@ -77,7 +77,6 @@ func GetTodos() gin.HandlerFunc {
             }},
         }
 
-        // Perform aggregation query
         result, err := todoCollection.Aggregate(ctx, mongo.Pipeline{matchStage, groupStage, projectStage})
         if err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while listing todo items"})
@@ -85,7 +84,6 @@ func GetTodos() gin.HandlerFunc {
         }
         defer result.Close(ctx)
 
-        // Decode results into slice of todos
         var todos []bson.M
         if err := result.All(ctx, &todos); err != nil {
             log.Fatal(err)
@@ -93,7 +91,6 @@ func GetTodos() gin.HandlerFunc {
             return
         }
 
-        // Respond with success and data
         c.JSON(http.StatusOK, gin.H{
             "success": true,
             "data":    todos,
@@ -161,14 +158,12 @@ func UpdateTodo() gin.HandlerFunc {
             return
         }
 
-        // Convert todoID string to ObjectID
         objID, err := primitive.ObjectIDFromHex(todoID)
         if err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid todo_id format"})
             return
         }
 
-        // Construct the filter and update document
         filter := bson.M{"_id": objID}
         update := bson.M{
             "$set": bson.M{
@@ -203,14 +198,12 @@ func DeleteTodo() gin.HandlerFunc {
         var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
         defer cancel()
 
-        // Convert todoID string to ObjectID
         objID, err := primitive.ObjectIDFromHex(todoID)
         if err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid todo_id format"})
             return
         }
 
-        // Construct the filter
         filter := bson.M{"_id": objID}
 
         _, err = todoCollection.DeleteOne(ctx, filter)

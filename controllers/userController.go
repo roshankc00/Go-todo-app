@@ -245,9 +245,6 @@ func GetMe() gin.HandlerFunc{
 		uid := c.GetString("uid")
 		userType := c.GetString("user_type")
 
-		// Optionally, you can use these values to fetch more detailed user information from your database or storage
-
-		// Return user profile data
 		c.JSON(http.StatusOK, gin.H{
 			"email":      email,
 			"first_name": firstName,
